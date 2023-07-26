@@ -1,0 +1,92 @@
+import os
+
+import discord
+from dotenv import load_dotenv
+
+from discord.ext import commands
+from requests import get, post
+
+load_dotenv(dotenv_path="config")
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+
+lampe_droite = {"entity_id": "light.lampe_droite"}
+lampe_gauche = {"entity_id": "light.lampe_gauche"}
+headers = {
+    "Authorization": os.getenv("HA_TOKEN"),
+    "content-type": "application/json",
+}
+dict_on = {"salon": "http://192.168.10.4:8123/api/services/light/turn_on"}
+dict_off = {"salon": "http://192.168.10.4:8123/api/services/light/turn_off"}
+dict_temp = {"salon": "http://192.168.10.4:8123/api/states/sensor.oeil_air_temperature",
+             "greg": "http://192.168.10.4:8123/api/states/sensor.oeil_air_temperature_3",
+             "parents": "http://192.168.10.4:8123/api/states/sensor.oeil_air_temperature_2",
+             "cuisine": "http://192.168.10.4:8123/api/states/sensor.cuisine_temperature_temperature",
+             "sdb": "http://192.168.10.4:8123/api/states/sensor.salle_de_bain_temperature_temperature",
+             "batcave": "http://192.168.10.4:8123/api/states/sensor.0x00158d0004216e50_temperature",
+             "ext": "http://192.168.10.4:8123/api/states/sensor.maison_temperature_exterieur_temperature", }
+
+
+@bot.event
+async def on_ready():
+    print(f'Connecté en tant que {bot.user}')
+
+
+@bot.command(name='t')
+async def t(ctx, arg: str = commands.parameter(description=", ".join([i for i in dict_temp]))):
+    """
+    Retourne la température d'une pièce.
+    :param ctx:
+    :param arg:
+    :return:
+    """
+    response = get(dict_temp.get(arg.lower()), headers=headers)
+    print(response.json().get("state"), "°C")
+    await ctx.send(response.json().get("state")+" "+"°C")
+
+
+@bot.command(name='temp')
+async def temp(ctx):
+    """
+    Retourne la température de toutes les pièces de la maison
+    :param ctx:
+    :return:
+    """
+    for cle, url in dict_temp.items():
+        response = get(url, headers=headers)
+        print(cle.capitalize(), response.json().get("state"), "°C")
+        await ctx.send(cle.capitalize()+" "+response.json().get("state")+" "+"°C")
+
+
+@bot.command(name='off')
+async def off(ctx, arg):
+    """
+    Eteins les lampe du salon (pour le moment)
+    :param ctx:
+    :param arg:
+    :return: none
+    """
+    response = post(dict_off.get(arg.lower()), headers=headers, json=lampe_droite)
+    response2 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_gauche)
+    print(response.text)
+    print(response2.text)
+
+
+@bot.command(name='on')
+async def on(ctx, arg):
+    """
+    Allumes les lampes du salon (pour le moment)
+    :param ctx:
+    :param arg:
+    :return: none
+    """
+    response = post(dict_on.get(arg.lower()), headers=headers, json=lampe_droite)
+    response2 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche)
+    print(response.text)
+    print(response2.text)
+
+bot.run(os.getenv("BOT_TOKEN"))

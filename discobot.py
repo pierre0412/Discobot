@@ -101,7 +101,7 @@ async def tempo(ctx):
     """
     Récupère et donnes les infos edf tempo du jour et du lendemain
     :param ctx: 
-    :return: 
+    :return: none
     """
     for cle, url in dict_tempo.items():
         response = get(url, headers=headers)

@@ -30,6 +30,13 @@ dict_temp = {"salon": "http://192.168.10.4:8123/api/states/sensor.oeil_air_tempe
              "batcave": "http://192.168.10.4:8123/api/states/sensor.0x00158d0004216e50_temperature",
              "ext": "http://192.168.10.4:8123/api/states/sensor.maison_temperature_exterieur_temperature", }
 
+dict_tempo = {"Aujourd'hui": "http://192.168.10.4:8123/api/states/sensor.tempo_aujourd_hui",
+              "Demain": "http://192.168.10.4:8123/api/states/sensor.tempo_demain"}
+
+dict_tempo_couleur = {"TEMPO_BLEU" : "Bleu",
+                      "TEMPO_BLANC" : "Blanc",
+                      "TEMPO_ROUGE" : "Rouge"}
+
 
 @bot.event
 async def on_ready():
@@ -88,5 +95,17 @@ async def on(ctx, arg):
     response2 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche)
     print(response.text)
     print(response2.text)
+
+@bot.command(name='tempo')
+async def tempo(ctx):
+    """
+    Récupère et donnes les infos edf tempo du jour et du lendemain
+    :param ctx: 
+    :return: 
+    """
+    for cle, url in dict_tempo.items():
+        response = get(url, headers=headers)
+        print(cle, dict_tempo_couleur.get(response.json().get("state")))
+        await ctx.send(cle +" : "+ dict_tempo_couleur.get(response.json().get("state")))
 
 bot.run(os.getenv("BOT_TOKEN"))

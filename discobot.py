@@ -33,9 +33,9 @@ dict_temp = {"salon": "http://192.168.10.4:8123/api/states/sensor.oeil_air_tempe
 dict_tempo = {"Aujourd'hui": "http://192.168.10.4:8123/api/states/sensor.tempo_aujourd_hui",
               "Demain": "http://192.168.10.4:8123/api/states/sensor.tempo_demain"}
 
-dict_tempo_couleur = {"TEMPO_BLEU" : "Bleu",
-                      "TEMPO_BLANC" : "Blanc",
-                      "TEMPO_ROUGE" : "Rouge"}
+dict_tempo_couleur = {"TEMPO_BLEU" : "Bleu :blue_circle:",
+                      "TEMPO_BLANC" : "Blanc :white_circle:",
+                      "TEMPO_ROUGE" : "Rouge :red_circle:"}
 
 
 @bot.event

@@ -14,8 +14,11 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 
-lampe_droite = {"entity_id": "light.lampe_droite"}
-lampe_gauche = {"entity_id": "light.lampe_gauche"}
+lampe_droite = {"entity_id": "light.salon_lampe_droite_1"}
+lampe_droite2 = {"entity_id": "light.salon_lampe_droite_2_2"}
+lampe_gauche = {"entity_id": "light.salon_lampe_gauche_1"}
+lampe_gauche2 = {"entity_id": "light.salon_lampe_gauche_2"}
+
 headers = {
     "Authorization": os.getenv("HA_TOKEN"),
     "content-type": "application/json",
@@ -33,9 +36,9 @@ dict_temp = {"salon": "http://192.168.10.4:8123/api/states/sensor.oeil_air_tempe
 dict_tempo = {"Aujourd'hui": "http://192.168.10.4:8123/api/states/sensor.tempo_aujourd_hui",
               "Demain": "http://192.168.10.4:8123/api/states/sensor.tempo_demain"}
 
-dict_tempo_couleur = {"TEMPO_BLEU" : "Bleu :blue_circle:",
-                      "TEMPO_BLANC" : "Blanc :white_circle:",
-                      "TEMPO_ROUGE" : "Rouge :red_circle:"}
+dict_tempo_couleur = {"TEMPO_BLEU": "Bleu :blue_circle:",
+                      "TEMPO_BLANC": "Blanc :white_circle:",
+                      "TEMPO_ROUGE": "Rouge :red_circle:"}
 
 
 @bot.event
@@ -78,9 +81,9 @@ async def off(ctx, arg):
     :return: none
     """
     response = post(dict_off.get(arg.lower()), headers=headers, json=lampe_droite)
-    response2 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_gauche)
-    print(response.text)
-    print(response2.text)
+    response2 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_droite2)
+    response3 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_gauche)
+    response4 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_gauche2)
 
 
 @bot.command(name='on')
@@ -92,9 +95,10 @@ async def on(ctx, arg):
     :return: none
     """
     response = post(dict_on.get(arg.lower()), headers=headers, json=lampe_droite)
-    response2 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche)
-    print(response.text)
-    print(response2.text)
+    response2 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_droite2)
+    response3 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche)
+    response4 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche2)
+
 
 @bot.command(name='tempo')
 async def tempo(ctx):
@@ -106,6 +110,6 @@ async def tempo(ctx):
     for cle, url in dict_tempo.items():
         response = get(url, headers=headers)
         print(cle, dict_tempo_couleur.get(response.json().get("state")))
-        await ctx.send(cle +" : "+ dict_tempo_couleur.get(response.json().get("state")))
+        await ctx.send(cle + " : " + dict_tempo_couleur.get(response.json().get("state")))
 
 bot.run(os.getenv("BOT_TOKEN"))

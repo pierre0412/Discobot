@@ -23,18 +23,18 @@ headers = {
     "Authorization": os.getenv("HA_TOKEN"),
     "content-type": "application/json",
 }
-dict_on = {"salon": "http://192.168.10.4:8123/api/services/light/turn_on"}
-dict_off = {"salon": "http://192.168.10.4:8123/api/services/light/turn_off"}
-dict_temp = {"salon": "http://192.168.10.4:8123/api/states/sensor.oeil_air_temperature",
-             "greg": "http://192.168.10.4:8123/api/states/sensor.oeil_air_temperature_3",
-             "parents": "http://192.168.10.4:8123/api/states/sensor.oeil_air_temperature_2",
-             "cuisine": "http://192.168.10.4:8123/api/states/sensor.cuisine_temperature_temperature",
-             "sdb": "http://192.168.10.4:8123/api/states/sensor.salle_de_bain_temperature_temperature",
-             "batcave": "http://192.168.10.4:8123/api/states/sensor.0x00158d0004216e50_temperature",
+dict_on = {"salon": "http://192.168.10.3:8123/api/services/light/turn_on"}
+dict_off = {"salon": "http://192.168.10.3:8123/api/services/light/turn_off"}
+dict_temp = {"salon": "http://192.168.10.3:8123/api/states/sensor.oeil_air_temperature",
+             "greg": "http://192.168.10.3:8123/api/states/sensor.oeil_air_temperature_3",
+             "parents": "http://192.168.10.3:8123/api/states/sensor.oeil_air_temperature_2",
+             "cuisine": "http://192.168.10.3:8123/api/states/sensor.cuisine_temperature_temperature",
+             "sdb": "http://192.168.10.3:8123/api/states/sensor.salle_de_bain_temperature_temperature",
+             "batcave": "http://192.168.10.3:8123/api/states/sensor.0x00158d0004216e50_temperature",
              "ext": "http://192.168.10.4:8123/api/states/sensor.maison_temperature_exterieur_temperature", }
 
-dict_tempo = {"Aujourd'hui": "http://192.168.10.4:8123/api/states/sensor.tempo_aujourd_hui",
-              "Demain": "http://192.168.10.4:8123/api/states/sensor.tempo_demain"}
+dict_tempo = {"Aujourd'hui": "http://192.168.10.3:8123/api/states/sensor.tempo_aujourd_hui",
+              "Demain": "http://192.168.10.3:8123/api/states/sensor.tempo_demain"}
 
 dict_tempo_couleur = {"TEMPO_BLEU": "Bleu :blue_circle:",
                       "TEMPO_BLANC": "Blanc :white_circle:",

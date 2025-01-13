@@ -38,9 +38,9 @@ dict_temp = {"salon": URL+"states/sensor.oeil_air_temperature",
 dict_tempo = {"Aujourd'hui": URL+"states/sensor.rte_tempo_couleur_actuelle",
               "Demain": URL+"states/sensor.rte_tempo_prochaine_couleur"}
 
-dict_tempo_couleur = {"TEMPO_BLEU": "Bleu :blue_circle:",
-                      "TEMPO_BLANC": "Blanc :white_circle:",
-                      "TEMPO_ROUGE": "Rouge :red_circle:"}
+dict_tempo_couleur = {"Bleu": "Bleu :blue_circle:",
+                      "Blanc": "Blanc :white_circle:",
+                      "Rouge": "Rouge :red_circle:"}
 
 
 @bot.event

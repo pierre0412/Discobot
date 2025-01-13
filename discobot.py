@@ -1,5 +1,5 @@
 import os
-
+import logging
 import discord
 from dotenv import load_dotenv
 
@@ -7,7 +7,7 @@ from discord.ext import commands
 from requests import get, post
 
 load_dotenv(dotenv_path="config")
-
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 URL = "http://192.168.10.3:8123/api/"
 
 intents = discord.Intents.default()
@@ -114,4 +114,4 @@ async def tempo(ctx):
         print(cle, dict_tempo_couleur.get(response.json().get("state")))
         await ctx.send(cle + " : " + dict_tempo_couleur.get(response.json().get("state")))
 
-bot.run(os.getenv("BOT_TOKEN"))
+bot.run(os.getenv("BOT_TOKEN"), log_handler=handler)

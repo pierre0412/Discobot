@@ -8,7 +8,7 @@ from requests import get, post
 
 load_dotenv(dotenv_path="config")
 
-URL = "http://192.168.10.4:8123/api/"
+URL = "http://192.168.10.3:8123/api/"
 
 intents = discord.Intents.default()
 intents.message_content = True

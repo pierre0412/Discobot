@@ -35,8 +35,8 @@ dict_temp = {"salon": URL+"states/sensor.oeil_air_temperature",
              "batcave": URL+"states/sensor.0x00158d0004216e50_temperature",
              "ext": URL+"states/sensor.maison_temperature_exterieur_temperature", }
 
-dict_tempo = {"Aujourd'hui": URL+"states/sensor.tempo_aujourd_hui",
-              "Demain": URL+"states/sensor.tempo_demain"}
+dict_tempo = {"Aujourd'hui": URL+"states/sensor.rte_tempo_couleur_actuelle",
+              "Demain": URL+"states/sensor.rte_tempo_prochaine_couleur"}
 
 dict_tempo_couleur = {"TEMPO_BLEU": "Bleu :blue_circle:",
                       "TEMPO_BLANC": "Blanc :white_circle:",

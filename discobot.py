@@ -30,6 +30,7 @@ dict_temp = {"salon": URL+"states/sensor.oeil_air_temperature",
              "cuisine": URL+"states/sensor.cuisine_temperature_temperature",
              "sdb": URL+"states/sensor.salle_de_bain_temperature_temperature",
              "batcave": URL+"states/sensor.0x00158d0004216e50_temperature",
+             "imprimante 3D": URL+"states/sensor.batcave_imprimante_3d_temperature",
              "ext": URL+"states/sensor.maison_temperature_exterieur_temperature", }
 
 dict_tempo = {"Aujourd'hui": URL+"states/sensor.rte_tempo_couleur_actuelle",

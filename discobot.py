@@ -1,5 +1,4 @@
 import os
-import logging
 import discord
 from dotenv import load_dotenv
 
@@ -7,7 +6,6 @@ from discord.ext import commands
 from requests import get, post
 
 load_dotenv(dotenv_path="config")
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 URL = "http://192.168.10.3:8123/api/"
 
 intents = discord.Intents.default()
@@ -15,16 +13,15 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-
-lampe_droite = {"entity_id": "light.salon_lampe_droite_1"}
-lampe_droite2 = {"entity_id": "light.salon_lampe_droite_2_2"}
-lampe_gauche = {"entity_id": "light.salon_lampe_gauche_1"}
-lampe_gauche2 = {"entity_id": "light.salon_lampe_gauche_2"}
+rooms = {
+    "salon":{"entity_id": ["light.salon_hue_gauche_1", "light.salon_hue_gauche_2", "light.salon_hue_droite_1", "light.salon_hue_droite_2"]}
+}
 
 headers = {
     "Authorization": os.getenv("HA_TOKEN"),
     "content-type": "application/json",
 }
+
 dict_on = {"salon": URL+"services/light/turn_on"}
 dict_off = {"salon": URL+"services/light/turn_off"}
 dict_temp = {"salon": URL+"states/sensor.oeil_air_temperature",
@@ -77,29 +74,29 @@ async def temp(ctx):
 @bot.command(name='off')
 async def off(ctx, arg):
     """
-    Eteint les lampe du salon (pour le moment)
+    Eteint l'élément passé en argument
     :param ctx:
     :param arg:
     :return: none
     """
-    response = post(dict_off.get(arg.lower()), headers=headers, json=lampe_droite)
-    response2 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_droite2)
-    response3 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_gauche)
-    response4 = post(dict_off.get(arg.lower()), headers=headers, json=lampe_gauche2)
+    arg =  arg.lower()
+    json = rooms.get(arg)
+    response = post(dict_off.get(arg), headers=headers, json=json)
+    await ctx.send("c'est fait !" if response.status_code == 200 else "je n'ai pas réussi")
 
 
 @bot.command(name='on')
 async def on(ctx, arg):
     """
-    Allumes les lampes du salon (pour le moment)
+    Allumes l'élément passé en argument
     :param ctx:
     :param arg:
     :return: none
     """
-    response = post(dict_on.get(arg.lower()), headers=headers, json=lampe_droite)
-    response2 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_droite2)
-    response3 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche)
-    response4 = post(dict_on.get(arg.lower()), headers=headers, json=lampe_gauche2)
+    arg = arg.lower()
+    json = rooms.get(arg)
+    response = post(dict_on.get(arg), headers=headers, json=json)
+    await ctx.send("c'est fait !" if response.status_code == 200 else "je n'ai pas réussi")
 
 
 @bot.command(name='tempo')
@@ -114,4 +111,4 @@ async def tempo(ctx):
         print(cle, dict_tempo_couleur.get(response.json().get("state")))
         await ctx.send(cle + " : " + dict_tempo_couleur.get(response.json().get("state")))
 
-bot.run(os.getenv("BOT_TOKEN"), log_handler=handler)
+bot.run(os.getenv("BOT_TOKEN"))

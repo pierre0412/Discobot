@@ -14,7 +14,11 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 rooms = {
-    "salon":{"entity_id": ["light.salon_hue_gauche_1", "light.salon_hue_gauche_2", "light.salon_hue_droite_1", "light.salon_hue_droite_2"]}
+    "salon":{"entity_id": ["light.salon_hue_gauche_1",
+                           "light.salon_hue_gauche_2",
+                           "light.salon_hue_droite_1",
+                           "light.salon_hue_droite_2"]
+             }
 }
 
 headers = {
@@ -23,7 +27,9 @@ headers = {
 }
 
 dict_on = {"salon": URL+"services/light/turn_on"}
+
 dict_off = {"salon": URL+"services/light/turn_off"}
+
 dict_temp = {"salon": URL+"states/sensor.oeil_air_temperature",
              "greg": URL+"states/sensor.oeil_air_temperature_3",
              "parents": URL+"states/sensor.oeil_air_temperature_2",

@@ -3,10 +3,10 @@ import signal
 import sys
 
 # Import Discord bot functions
-from discobot import start_bot, stop_bot, sync_commands
+from discobot import start_bot, stop_bot
 
 # Import MQTT client
-from mqtt import mqtt_client, publish_message, dico_valeurs
+from mqtt import mqtt_client
 
 # Flag to track if a shutdown is in progress
 shutdown_in_progress = False

@@ -2,6 +2,7 @@ import json
 import os
 import random
 import asyncio
+import threading
 
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
@@ -42,16 +43,14 @@ class MQTTManager:
         # Se connecter
         self._connect()
 
-
     def send_discord_message(self, message):
-        """Envoie un message Discord via la queue"""
+        """Envoie un message Discord via la méthode synchrone"""
         try:
             from discobot import discord_bot
-            discord_bot.queue_message(message)
-            print(f"📧 Message Discord envoyé: {message}")
+            discord_bot.send_message_sync(message)
+            print(f"📧 Message Discord envoyé à la queue: {message}")
         except Exception as e:
             print(f"❌ Erreur envoi Discord: {e}")
-
 
     def _on_connect(self, client, userdata, flags, reason_code, properties=None):
         print(f"MQTT connecté avec le code {reason_code}")

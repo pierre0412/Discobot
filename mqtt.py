@@ -5,6 +5,8 @@ import random
 import paho.mqtt.client as mqtt
 from dotenv import load_dotenv
 
+from discobot import send_simple_message
+
 load_dotenv(dotenv_path="config")
 
 broker = os.getenv("MQTT_BROKER")
@@ -25,22 +27,26 @@ dico_topics = {
     "imprimante_3d_t": ("zigbee2mqtt/Batcave - Imprimante 3D", "temperature"),
     "cuisine_t": ("zigbee2mqtt/Cuisine - Temperature", "temperature"),
     "cuisine_congelateur_t": ("zigbee2mqtt/Cuisine - Congelateur", "temperature"),
+    "cuisine_refrigerateur_t": ("zigbee2mqtt/Cuisine - Refrigerateur", "temperature"),
+    "nuki": ("nukihub/lock", "state")
 }
 
 dico_valeurs = {}
 
-def on_connect(client, userdata, flags, reason_code, properties):
+def on_connect(client, reason_code):
     print(f"MQTT connecté avec le code {reason_code}")
     # S'abonner aux topics spécifiques
     for topic, _ in dico_topics.values():
         client.subscribe(topic)
-    print(f"✓ Abonné à {len(dico_topics)} capteurs de température")
+    print(f"✓ Abonné à {len(dico_topics)} topics")
 
-def on_message(client, userdata, msg):
+def on_message(msg):
     """Callback appelé quand un message MQTT est reçu"""
     try:
         # Chercher quel capteur correspond à ce topic
         for cle, (topic, field) in dico_topics.items():
+            if msg.topic == "nukihub/lock":
+                send_simple_message(message=f"🚪 {msg.payload.decode('utf-8')} ({cle})")
             if msg.topic == topic:
                 payload = json.loads(msg.payload.decode("utf-8"))
                 dico_valeurs[cle] = payload.get(field, 0)

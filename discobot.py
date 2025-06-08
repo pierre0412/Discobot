@@ -1,7 +1,6 @@
 import os
 import json
 import discord
-from discord import message
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -167,10 +166,8 @@ async def light(interaction: discord.Interaction, piece: str, etat: str):
     # Vérifier si la pièce est valide
     if piece_norm not in topic_map:
         pieces_dispo = ", ".join(topic_map.keys())
-        await interaction.response.send_message(
-            f"❌ Pièce '{piece}' non reconnue.\nPièces disponibles: {pieces_dispo}",
-            ephemeral=True
-        )
+        await interaction.response.send_message(f"❌ Pièce '{piece}' non reconnue.\nPièces disponibles: {pieces_dispo}",
+            ephemeral=True)
         return
 
     # Obtenir le topic MQTT
@@ -195,6 +192,12 @@ async def light(interaction: discord.Interaction, piece: str, etat: str):
             "❌ Erreur lors de l'envoi de la commande MQTT",
             ephemeral=True
         )
+
+
+async def send_simple_message(message):
+    channel = bot.get_channel(941854371023577108)
+    await channel.send(message)
+    print(f"📧 Message envoyé: {message}")
 
 # Gestion des erreurs
 @bot.tree.error

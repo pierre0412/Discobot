@@ -67,8 +67,9 @@ class MQTTManager:
                 payload = json.loads(msg.payload.decode("utf-8"))
                 current_state = payload.get("lock_state", "unknown")
                 # Vérifier si l'état a changé de locked à unlocked
+                etat_porte = "dévérouillée" if current_state == "unlocked" else "verrouillée"
                 if self.previous_nuki_state != current_state:
-                    self.send_discord_message(f"🔓 **La porte vient d'être {current_state} !**")
+                    self.send_discord_message(f"🔓 **La porte vient d'être {etat_porte} !**")
                 # Mettre à jour l'état précédent et le dictionnaire de valeurs
                 self.previous_nuki_state = current_state
                 self.dico_valeurs["nuki"] = current_state
